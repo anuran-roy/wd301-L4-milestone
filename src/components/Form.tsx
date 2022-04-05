@@ -152,6 +152,7 @@ export default function Form(props: { formId: number }) {
   const updateLabel = (label_value: string, id: number) => {
     setFormState({
       ...formState,
+      id: Number(new Date()),
       formFields: formState.formFields.map((field) => {
         if (field.id === id) {
           return {
