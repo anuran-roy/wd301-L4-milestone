@@ -19,12 +19,12 @@ export default function Preview(props: { formId: number }) {
   };
 
   const initialResponseState = () => {
-    const localResponses = getResponses().filter(
-      (response) => response.id === props.formId
-    );
+    const localResponses = getResponses();
 
-    if (localResponses.length > 0) {
-      return localResponses.filter((form) => form.id === props.formId)[0];
+    const relevantResponse = localResponses.filter((response) => response.id === props.formId);
+
+    if (relevantResponse.length > 0) {
+      return relevantResponse[0];
     }
 
     const formDetails = getForm();
