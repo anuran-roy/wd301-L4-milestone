@@ -64,7 +64,7 @@ export default function Home() {
           {/* <p>Welcome to the Home Page</p> */}
           <button
             onClick={newForm}
-            className="m-2 rounded-md text-sky-500 shadow-xl hover:bg-sky-500 p-2 hover:text-white hover:bg-sky-700"
+            className="m-2 rounded-md p-2 text-sky-500 shadow-xl hover:bg-sky-500 hover:bg-sky-700 hover:text-white"
           >
             New Form
           </button>

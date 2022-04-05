@@ -4,7 +4,6 @@ import Header from "./Header";
 import { navigate } from "raviger";
 import formDataType from "../types/formDataType";
 import responseDataType from "../types/responseDataType";
-import formFieldType from "../types/formFieldType";
 import getForms from "../functions/getForms";
 import getResponses from "../functions/getResponses";
 import saveResponses from "../functions/saveResponses";
@@ -17,22 +16,6 @@ export default function Preview(props: { formId: number }) {
     const localForm = getForms().filter((form) => form.id === props.formId)[0];
 
     return localForm;
-  };
-
-  const getResponse: () => responseDataType = () => {
-    const localResponse = getResponses().filter(
-      (response) => response.id === props.formId
-    )[0];
-
-    return localResponse;
-  };
-
-  const getFields: () => formFieldType[] = () => {
-    return getForm().formFields;
-  };
-
-  const getField: (fieldId: number) => formFieldType = (fieldId: number) => {
-    return getForm().formFields.filter((field) => field.id === fieldId)[0];
   };
 
   const initialResponseState = () => {
@@ -59,9 +42,6 @@ export default function Preview(props: { formId: number }) {
   const [question, setQuestion] = useState(0);
   const [responseState, setResponseState] = useState(() =>
     initialResponseState()
-  );
-  const [questionDetails, setQuestionDetails] = useState(
-    responseState.formFields[question]
   );
 
   const gotoNextQuestion = () => {
@@ -140,7 +120,7 @@ export default function Preview(props: { formId: number }) {
   return (
     <AppContainer>
       <Header title=""></Header>
-      <p className="text-3xl flex justify-center py-5">{responseState.title}</p>
+      <p className="flex justify-center py-5 text-3xl">{responseState.title}</p>
       <p className="my-5">
         <i>Last modified on:</i> {responseState.last_modified}
       </p>

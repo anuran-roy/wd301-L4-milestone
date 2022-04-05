@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 export default function Label(props: {
   id: number;
@@ -20,8 +20,7 @@ export default function Label(props: {
           onChange={(e: any) => {
             props.updateLabelCB(e.target.value, props.id);
           }}
-        >
-        </input>
+        ></input>
         <p className="my-5 mx-3">Input Type: {props.fieldType}</p>
         <button
           onClick={(_) => props.removeFieldCB(props.id)}

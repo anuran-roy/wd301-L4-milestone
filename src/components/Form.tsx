@@ -133,21 +133,21 @@ export default function Form(props: { formId: number }) {
     });
   };
 
-  const updateField = (e_value: string, id: number) => {
-    setFormState({
-      ...formState,
-      formFields: formState.formFields.map((field) => {
-        if (field.id === id) {
-          return {
-            ...field,
-            value: e_value,
-          };
-        }
+  // const updateField = (e_value: string, id: number) => {
+  //   setFormState({
+  //     ...formState,
+  //     formFields: formState.formFields.map((field) => {
+  //       if (field.id === id) {
+  //         return {
+  //           ...field,
+  //           value: e_value,
+  //         };
+  //       }
 
-        return field;
-      }),
-    });
-  };
+  //       return field;
+  //     }),
+  //   });
+  // };
 
   const updateLabel = (label_value: string, id: number) => {
     setFormState({
@@ -202,8 +202,7 @@ export default function Form(props: { formId: number }) {
               value={field.value}
               updateLabelCB={updateLabel}
             />
-          )
-          )}
+          ))}
           <div className="flex gap-6">
             {/* <div
               // type="submit"
