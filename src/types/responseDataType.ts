@@ -1,7 +1,7 @@
 import formFieldType from "./formFieldType";
 
-export default interface formDataType {
-  created_on: string;
+export default interface responseDataType {
+  last_modified: string;
   id: number;
   title: string;
   formFields: formFieldType[];

@@ -1,20 +1,24 @@
-import React, { useState, useRef, useEffect } from "react";
-import LabelledInput from "./LabelledInput";
+import React, { useState, useEffect } from "react";
+import Label from "./Labels";
 import getForms from "../functions/getForms";
 import saveForms from "../functions/saveForms";
 import AppContainer from "./AppContainer";
+import { Link } from "raviger";
+
+import Header from "./Header";
+
 interface formFieldType {
-  id: number,
-  label: string,
-  fieldType: string,
-  value: string
+  id: number;
+  label: string;
+  fieldType: string;
+  value: string;
 }
 
 interface formDataType {
-  created_on: string,
-  id: number,
-  title: string,
-  formFields: formFieldType[]
+  created_on: string;
+  id: number;
+  title: string;
+  formFields: formFieldType[];
 }
 
 const initialFormFields: formFieldType[] = [
@@ -24,17 +28,16 @@ const initialFormFields: formFieldType[] = [
   { id: 4, label: "Date of Birth", fieldType: "date", value: "" },
 ];
 
-
 export default function Form(props: { formId: number }) {
   const initialFormState: () => formDataType = () => {
     const localForms = getForms();
 
     if (localForms.length > 0) {
-      return localForms.filter(form => form.id === props.formId)[0];
+      return localForms.filter((form) => form.id === props.formId)[0];
     }
 
     const newForm = {
-      created_on: (new Date()).toString(),
+      created_on: new Date().toString(),
       id: Number(new Date()),
       title: "New Untitled Form",
       formFields: initialFormFields,
@@ -52,7 +55,7 @@ export default function Form(props: { formId: number }) {
     let persistentAutoSaveState: boolean = prevAutoSaveState
       ? JSON.parse(prevAutoSaveState)
       : false;
-  
+
     return persistentAutoSaveState;
   };
 
@@ -87,11 +90,11 @@ export default function Form(props: { formId: number }) {
     }
   };
 
-  const addField = () => {
-    let field_type: string = "text";
-    if (newField.toLowerCase() === "password") {
-      field_type = "password";
-    }
+  const addField = (field_type: string) => {
+    // let field_type: string = "text";
+    // if (newField.toLowerCase() === "password") {
+    //   field_type = "password";
+    // }
     if (newField.length === 0) {
       alert("Can't add a field with empty name!");
     } else {
@@ -112,11 +115,11 @@ export default function Form(props: { formId: number }) {
     }
   };
 
-  const clearFields = () => {
+  const clearLabels = () => {
     setFormState({
       ...formState,
       formFields: formState.formFields.map((field) => {
-        return { ...field, value: "" };
+        return { ...field, label: "" };
       }),
     });
   };
@@ -146,99 +149,155 @@ export default function Form(props: { formId: number }) {
     });
   };
 
+  const updateLabel = (label_value: string, id: number) => {
+    setFormState({
+      ...formState,
+      formFields: formState.formFields.map((field) => {
+        if (field.id === id) {
+          return {
+            ...field,
+            label: label_value,
+          };
+        }
+
+        return field;
+      }),
+    });
+  };
+
   const setTitle = (formId: number, title: string) => {
-    setFormState({...formState, title: title});
+    setFormState({ ...formState, title: title });
     saveForm(formState);
-  }
+  };
   return (
     <AppContainer>
-    <div className="flex flex-col justify-center m-6 p-5 align-middle">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
-        {/* <label htmlFor="formTitle">Form Name: </label> */}
-        <div className="divide-y-8 divide-black-500">
-        <input
-          type="text"
-          className="my-2 flex-1 text-4xl focus:rounded-lg border-b-2 border-white hover:border-sky-500 p-2"
-          value={formState.title}
-          onChange={(e) => {setTitle(props.formId, e.target.value)}}
-          placeholder="Enter form name..."
-          id="formTitle"></input></div><br />
-        {formState.formFields.map((field) => (
-          <LabelledInput
-            id={field.id}
-            key={field.id}
-            label={field.label}
-            fieldType={field.fieldType}
-            removeFieldCB={removeField}
-            value={field.value}
-            updateFieldCB={updateField}
-          />
-        ))}
-
-        <button
-          type="submit"
-          // onClick={document.forms[0].submit()}
-          className="btn m-4 rounded-lg bg-sky-500 py-2 px-4 font-bold text-white hover:bg-sky-700"
-        >
-          Submit
-        </button>
-        <a href="/"><button
-          className="btn m-4 rounded-lg bg-sky-500 py-2 px-4 font-bold text-white hover:bg-sky-700"
-        >
-          Close Form
-        </button></a>
-        <button
-          onClick={clearFields}
-          className="btn m-4 rounded-lg bg-sky-500 py-2 px-4 font-bold text-white hover:bg-sky-700"
-        >
-          Clear Form
-        </button>
-        <button
-          onClick={(_) => {saveForm(formState)}}
-          className="btn m-4 rounded-lg bg-sky-500 py-2 px-4 font-bold text-white hover:bg-sky-700"
-        >
-          Save Form
-        </button>
-      </form>
-      <div className="flex">
-        <input
-          type="text"
-          className="my-2 flex-1 rounded-lg border-2 border-gray-200 p-2"
-          placeholder="Enter new field name..."
-          id="addFieldInput"
-          value={newField}
-          onChange={(e: any) => {
+      <Header title="" />
+      <div className="m-6 flex flex-col justify-center p-5 align-middle">
+        <form
+          onSubmit={(e) => {
             e.preventDefault();
-            // console.log(e.target.value);
-            setNewField(e.target.value);
           }}
-        />
-        <button
-          onClick={addField}
-          className="btn m-4 rounded-lg bg-sky-500 py-2 px-4 font-bold text-white hover:bg-sky-700"
         >
-          Add Field
-        </button>
-        <div className="my-2 flex-1 items-center py-2">
-              <label htmlFor="autoSave" className="px-2">
-                Autosave?
-              </label>
-              <input
-                type="checkbox"
-                name="autosave"
-                id="autoSave"
-                defaultChecked={autoSaveState}
-                onClick={(_) => {
-                  switchAutoSave();
-                }}
-              ></input>
+          {/* <label htmlFor="formTitle">Form Name: </label> */}
+          <div className="divide-black-500 flex divide-y-8">
+            <input
+              type="text"
+              className="my-2 h-14 w-14 flex-1 items-center border-0 p-2 text-center text-4xl hover:border-b-2 hover:border-b-sky-500 focus:border-b-2 focus:border-b-sky-500 focus:outline-none focus:ring-0"
+              value={formState.title}
+              onChange={(e) => {
+                setTitle(props.formId, e.target.value);
+              }}
+              placeholder="Enter form name..."
+              id="formTitle"
+            ></input>
+          </div>
+          <br />
+          {formState.formFields.map((field) => (
+            <Label
+              id={field.id}
+              key={field.id}
+              label={field.label}
+              fieldType={field.fieldType}
+              removeFieldCB={removeField}
+              value={field.value}
+              updateLabelCB={updateLabel}
+            />
+          )
+          )}
+          <div className="flex gap-6">
+            {/* <div
+              // type="submit"
+              onClick={(_) => {
+                document.forms[0].submit();
+              }}
+              className="btn my-4 rounded-md bg-sky-500 py-2 px-4 font-bold text-white hover:cursor-pointer hover:bg-sky-700"
+            >
+              Submit
+            </div> */}
+            <Link href="/">
+              <div className="my-4 rounded-md bg-sky-500 py-2 px-4 font-bold text-white hover:bg-sky-700">
+                Close Form
+              </div>{" "}
+            </Link>
+            <div
+              onClick={clearLabels}
+              className="btn my-4 rounded-md bg-sky-500 py-2 px-4 font-bold text-white hover:cursor-pointer hover:bg-sky-700"
+            >
+              Clear Labels
             </div>
+            <div
+              onClick={(_) => {
+                saveForm(formState);
+              }}
+              className="btn my-4 rounded-md bg-sky-500 py-2 px-4 font-bold text-white hover:cursor-pointer hover:bg-sky-700"
+            >
+              Save Form
+            </div>
+          </div>
+        </form>
+        <div className="flex">
+          <input
+            type="text"
+            className="my-2 flex-1 rounded-md border-2 border-gray-200 p-2"
+            placeholder="Enter new field name..."
+            id="addFieldInput"
+            value={newField}
+            onChange={(e: any) => {
+              e.preventDefault();
+              // console.log(e.target.value);
+              setNewField(e.target.value);
+            }}
+          />
+          <select
+            id="fieldOptions"
+            name="fieldOptions"
+            className="mx-5 rounded-md px-3"
+          >
+            <optgroup label="Textual">
+              <option value="text">Text</option>
+              <option value="email">Email</option>
+              <option value="password">Password</option>
+              <option value="date">Date</option>
+              <option value="time">Time</option>
+              <option value="url">URL</option>
+            </optgroup>
+            <optgroup label="Numeric">
+              <option value="number">Number</option>
+              <option value="tel">Phone Number</option>
+              <option value="range">Range</option>
+            </optgroup>
+            {/* <optgroup label="Multimedia">
+              <option value="image">Image Upload</option>
+              <option value="file">File Upload</option>
+            </optgroup> */}
+
+            {/* <option value="color">Color</option> */}
+            {/* <option value="checkbox">Checkbox</option> */}
+          </select>
+          <button
+            onClick={(_) => {
+              addField(document.getElementById("fieldOptions").value);
+            }}
+            className="btn m-4 rounded-lg bg-white py-2 px-4 text-2xl font-bold text-green-500 shadow-lg hover:bg-green-500 hover:text-white"
+          >
+            +
+          </button>
+          <div className="my-2 mx-6 flex-1 items-center py-2 px-6">
+            <label htmlFor="autoSave" className="px-2">
+              Autosave?
+            </label>
+            <input
+              type="checkbox"
+              name="autosave"
+              id="autoSave"
+              defaultChecked={autoSaveState}
+              onClick={(_) => {
+                switchAutoSave();
+              }}
+            ></input>
+          </div>
+        </div>
       </div>
-    </div>
     </AppContainer>
   );
 }

@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import About from "../components/About";
 import App from "../App";
 import Form from "../components/Form";
+import Preview from "../components/Preview";
 
 export default function AppRouter() {
   const [state, setState] = useState("HOME");
@@ -21,7 +22,8 @@ export default function AppRouter() {
   const routes = {
     "/": () => <App />, // <Header title="Hello World!" />,
     "/about": () => <About />,
-    "/form/:id": ({ id }: {id: string}) => <Form formId={Number(id)} />
+    "/form/:id": ({ id }: { id: string }) => <Form formId={Number(id)} />,
+    "/preview/:id": ({ id }: { id: string }) => <Preview formId={Number(id)} />,
   };
 
   const routeResult = useRoutes(routes);
