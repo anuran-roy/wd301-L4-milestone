@@ -158,7 +158,7 @@ export default function Form(props: { formId: number }) {
   };
 
   const setTitle = (formId: number, title: string) => {
-    setFormState({ ...formState, title: title });
+    setFormState({ ...formState, hash: Number(new Date()), title: title });
     saveForm(formState);
   };
   return (
