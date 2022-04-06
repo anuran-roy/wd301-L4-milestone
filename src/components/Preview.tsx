@@ -20,8 +20,8 @@ export default function Preview(props: { formId: number }) {
 
   const initialResponseState = () => {
     const localResponses = getResponses();
-
-    const relevantResponse = localResponses.filter((response) => response.id === props.formId);
+    const relevantForm = getForm();
+    const relevantResponse = localResponses.filter((response) => response.id === props.formId && response.hash === relevantForm.hash);
 
     if (relevantResponse.length > 0) {
       return relevantResponse[0];
@@ -31,6 +31,7 @@ export default function Preview(props: { formId: number }) {
     const newResponse = {
       last_modified: new Date().toString(),
       id: props.formId,
+      hash: relevantForm.hash,
       title: formDetails.title,
       formFields: formDetails.formFields,
     };

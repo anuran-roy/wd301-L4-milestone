@@ -2,24 +2,12 @@ import React, { useState, useEffect } from "react";
 import Label from "./Labels";
 import getForms from "../functions/getForms";
 import saveForms from "../functions/saveForms";
+import formFieldType from "../types/formFieldType";
+import formDataType from "../types/formDataType";
 import AppContainer from "./AppContainer";
 import { Link } from "raviger";
 
 import Header from "./Header";
-
-interface formFieldType {
-  id: number;
-  label: string;
-  fieldType: string;
-  value: string;
-}
-
-interface formDataType {
-  created_on: string;
-  id: number;
-  title: string;
-  formFields: formFieldType[];
-}
 
 const initialFormFields: formFieldType[] = [
   { id: 1, label: "First Name", fieldType: "text", value: "" },
@@ -38,6 +26,7 @@ export default function Form(props: { formId: number }) {
 
     const newForm = {
       created_on: new Date().toString(),
+      hash: Number(new Date()),
       id: Number(new Date()),
       title: "New Untitled Form",
       formFields: initialFormFields,
@@ -100,6 +89,7 @@ export default function Form(props: { formId: number }) {
     } else {
       setFormState({
         ...formState,
+        hash: Number(new Date()),
         formFields: [
           ...formState.formFields,
           {
@@ -127,6 +117,7 @@ export default function Form(props: { formId: number }) {
   const removeField = (id: number) => {
     setFormState({
       ...formState,
+      hash: Number(new Date()),
       formFields: formState.formFields.filter((field) => {
         return field.id !== id;
       }),
@@ -152,7 +143,7 @@ export default function Form(props: { formId: number }) {
   const updateLabel = (label_value: string, id: number) => {
     setFormState({
       ...formState,
-      id: Number(new Date()),
+      hash: Number(new Date()),
       formFields: formState.formFields.map((field) => {
         if (field.id === id) {
           return {
