@@ -48,7 +48,7 @@ export default function Home() {
       >
         <input
           type="text"
-          className="my-2 flex-1 border-0 p-2 text-4xl hover:border-b-2 hover:border-b-sky-500 focus:border-b-2 focus:border-b-sky-500 focus:outline-none focus:ring-0"
+          className="w-96 my-2 flex-1 border-0 p-2 text-4xl hover:border-b-2 hover:border-b-sky-500 focus:border-b-2 focus:border-b-sky-500 focus:outline-none focus:ring-0"
           value={searchString}
           onChange={(e) => {
             setSearchString(e.target.value);
@@ -70,7 +70,7 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <ul className="grid grid-cols-2">
+      <ul className="grid lg:grid-cols-2 md:grid-cols-1">
         {listState
           .filter((form) =>
             form.title.toLowerCase().includes(search?.toLowerCase() || "")
