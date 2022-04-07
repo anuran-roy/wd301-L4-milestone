@@ -9,8 +9,6 @@ import getResponses from "../functions/getResponses";
 import saveResponses from "../functions/saveResponses";
 import PreviewInput from "./PreviewInput";
 
-// import initialFormFields from "../presets/initialFormFields";
-
 export default function Preview(props: { formId: number }) {
   const getForm: () => formDataType = () => {
     const localForm = getForms().filter((form) => form.id === props.formId)[0];
@@ -21,7 +19,10 @@ export default function Preview(props: { formId: number }) {
   const initialResponseState = () => {
     const localResponses = getResponses();
     const relevantForm = getForm();
-    const relevantResponse = localResponses.filter((response) => response.id === props.formId && response.hash === relevantForm.hash);
+    const relevantResponse = localResponses.filter(
+      (response) =>
+        response.id === props.formId && response.hash === relevantForm.hash
+    );
 
     if (relevantResponse.length > 0) {
       return relevantResponse[0];
@@ -53,7 +54,6 @@ export default function Preview(props: { formId: number }) {
   const gotoNextQuestion = () => {
     if (question < responseState.formFields.length - 1) {
       setQuestion(question + 1);
-      // setQuestionDetails(responseState.formFields[question]);
     } else {
       alert("You are at the last question!");
     }
@@ -62,7 +62,6 @@ export default function Preview(props: { formId: number }) {
   const gotoPreviousQuestion = () => {
     if (question > 0) {
       setQuestion(question - 1);
-      // setQuestionDetails(responseState.formFields[question]);
     } else {
       alert("You are at the first question!");
     }
@@ -70,12 +69,10 @@ export default function Preview(props: { formId: number }) {
 
   const gotoFirstQuestion = () => {
     setQuestion(0);
-    // setQuestionDetails(responseState.formFields[question]);
   };
 
   const gotoLastQuestion = () => {
     setQuestion(responseState.formFields.length - 1);
-    // setQuestionDetails(responseState.formFields[question]);
   };
 
   const closePreview = () => {
@@ -92,18 +89,6 @@ export default function Preview(props: { formId: number }) {
   useEffect(() => {
     saveResponse({ ...responseState, last_modified: new Date().toString() });
   }, [question, responseState]);
-
-  //   const initialResponseState = () => {
-  //       let currentForms: formDataType[];
-  //     const savedJSON = localStorage.getItem("savedResponses");
-  //     if (savedJSON !== undefined) {
-  //         currentForms = JSON.parse(savedJSON);
-  //     } else {
-  //         currentForms = [];
-  //     }
-
-  //     return currentForms;
-  //   };
 
   const updateField = (e_value: string, id: number) => {
     // console.log(responseState);
@@ -122,10 +107,10 @@ export default function Preview(props: { formId: number }) {
       }),
     });
   };
-  
-  return responseState.formFields.length === 0 ? 
-    emptyForm() :
-  (
+
+  return responseState.formFields.length === 0 ? (
+    emptyForm()
+  ) : (
     <AppContainer>
       <Header title=""></Header>
       <p className="flex justify-center py-5 text-3xl">{responseState.title}</p>
