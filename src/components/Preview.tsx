@@ -45,6 +45,11 @@ export default function Preview(props: { formId: number }) {
     initialResponseState()
   );
 
+  const emptyForm = () => {
+    alert("Form Empty. Returning to home screen...");
+    navigate("/");
+  };
+
   const gotoNextQuestion = () => {
     if (question < responseState.formFields.length - 1) {
       setQuestion(question + 1);
@@ -117,8 +122,10 @@ export default function Preview(props: { formId: number }) {
       }),
     });
   };
-
-  return (
+  
+  return responseState.formFields.length === 0 ? 
+    emptyForm() :
+  (
     <AppContainer>
       <Header title=""></Header>
       <p className="flex justify-center py-5 text-3xl">{responseState.title}</p>
