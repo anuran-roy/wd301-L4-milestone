@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AppContainer from "./AppContainer";
 import Header from "./Header";
-import { navigate } from "raviger";
+import { navigate, Redirect } from "raviger";
 import formDataType from "../types/formDataType";
 import responseDataType from "../types/responseDataType";
 import getForms from "../functions/getForms";
@@ -48,7 +48,8 @@ export default function Preview(props: { formId: number }) {
 
   const emptyForm = () => {
     alert("Form Empty. Returning to home screen...");
-    navigate("/");
+    // navigate("/");
+    return (<Redirect to="/" />)
   };
 
   const gotoNextQuestion = () => {
@@ -110,6 +111,7 @@ export default function Preview(props: { formId: number }) {
 
   return responseState.formFields.length === 0 ? (
     emptyForm()
+    // <Redirect to="/" />
   ) : (
     <AppContainer>
       <Header title=""></Header>
